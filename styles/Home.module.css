@@ -1,0 +1,44 @@
+.main {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 35px 200px 35px;
+  width: 40vw;
+  height: auto;
+  column-gap: 1em;
+  row-gap: 1.25em;
+  margin: 0 auto;
+}
+
+.header {
+  margin-top: 5em;
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+.main select {
+  height: 30px;
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  border: 1px solid #dfe1e5;
+  border-radius: 8px;
+  height: 40px;
+  padding-left: 18px;
+}
+
+.main textarea {
+  resize: none;
+}
+
+.translated {
+  border: 0;
+}
+
+.main button {
+  cursor: pointer;
+  margin-left: auto;
+
+  width: 10vw;
+  grid-column-start: 2;
+}
