@@ -46,12 +46,14 @@ export default function Home() {
           name="sourceLang"
           id="sourceLang"
           onChange={(e) => setSourceLang(e.target.value)}
+          placeholder="Source language"
         />
         <input
           list="supported-languages"
           name="targetLang"
           id="targetLang"
           onChange={(e) => setTargetLang(e.target.value)}
+          placeholder="Target language"
         />
         <textarea
           id="sl"
@@ -68,6 +70,7 @@ export default function Home() {
           disabled
           className={styles.translated}
           value={translatedQuery}
+          placeholder="Translation..."
         ></textarea>
         <button onClick={translate}>Translate</button>
       </main>
