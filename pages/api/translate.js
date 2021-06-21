@@ -3,39 +3,12 @@
 const _ = require("lodash");
 const request = require("request-promise");
 
-module.exports = function () {
-  let opts, text, sourceLang, targetLang, callback;
-  const args = [].slice.call(arguments);
-  if (_.isPlainObject(args[0])) {
-    opts = args[0];
-    text = opts.text;
-    sourceLang = opts.source || opts.src || opts.sl || opts.sourceLang;
-    targetLang = opts.target || opts.tgt || opts.tl || opts.targetLang;
-    callback = args[1];
-  } else if (_.isString(args[0])) {
-    text = args[0];
-    if (_.isString(args[1])) {
-      if (_.isString(args[2])) {
-        sourceLang = args[1];
-        targetLang = args[2];
-        callback = args[3];
-      } else {
-        sourceLang = "auto";
-        targetLang = args[1];
-        callback = args[2];
-      }
-    }
-  } else {
-    throw new Error("Invalid arguments");
-  }
-
-  if (!text) {
-    throw new Error("Need a text to translate");
-  }
-  if (!targetLang) {
-    throw new Error("Need a targetLang to translate to");
-  }
-  callback = _.isFunction(callback) ? callback : _.noop;
+const translate = (sourceLang, targetLang, text) => {
+  const data = {
+    sl: sourceLang,
+    tl: targetLang,
+    q: text,
+  };
 
   const url =
     "https://translate.google.com/translate_a/single" +
@@ -43,12 +16,6 @@ module.exports = function () {
     targetLang +
     "&ie=UTF-8" +
     "&oe=UTF-8&inputm=2&otf=2&iid=1dd3b944-fa62-4b55-b330-74909a99969e";
-
-  const data = {
-    sl: sourceLang,
-    tl: targetLang,
-    q: text,
-  };
 
   return request({
     method: "POST",
@@ -76,7 +43,6 @@ module.exports = function () {
 
       const translation = new Translation(json);
 
-      callback(translation);
       return translation;
     })
     .catch(function (err) {
@@ -87,7 +53,16 @@ module.exports = function () {
       newError.statusCode = err.statusCode;
       newError.url = url;
       newError.body = err.error;
-      callback(newError);
       throw newError;
     });
+};
+
+export default async (req, res) => {
+  const { sourceLang, targetLang, query } = req.query;
+  try {
+    let translation = await translate(sourceLang, targetLang, query);
+    res.status(200).json(translation);
+  } catch (error) {
+    res.status(400).json(error);
+  }
 };
