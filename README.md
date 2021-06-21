@@ -1,6 +1,6 @@
 # Language Translation App
 
-===============
+---
 
 ## This is a development practice challenge for topcoder
 
