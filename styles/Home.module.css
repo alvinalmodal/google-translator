@@ -42,3 +42,10 @@
   width: 10vw;
   grid-column-start: 2;
 }
+
+@media only screen and (main-width: 800px) {
+  .main {
+    width: 100vw;
+    height: auto;
+  }
+}
